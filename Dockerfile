@@ -5,7 +5,7 @@ MAINTAINER Pavel Evstigneev <pavel.evst@gmail.com>
 RUN \
 # Install firefox and xvfb
 apk update && apk upgrade && \
-apk add xvfb bash firefox-esr dbus ttf-freefont fontconfig && \
+apk add xvfb bash firefox-esr dbus ttf-freefont fontconfig python curl && \
 rm -rf /var/cache/apk/*
 
 RUN \
@@ -24,3 +24,11 @@ COPY slimerjs /usr/local/slimerjs
 RUN \
 ln -s /usr/local/slimerjs/src/slimerjs /usr/bin/slimerjs && \
 slimerjs /usr/local/slimerjs/examples/phantomjs/loadspeed.js http://google.com
+
+# Install casperjs
+RUN curl -L -o /tmp/casperjs.zip https://github.com/n1k0/casperjs/archive/master.zip && \
+    mkdir /opt && \
+    unzip /tmp/casperjs.zip -d /opt && \
+    mv /opt/casperjs-master /opt/casperjs && \
+    ln -s /opt/casperjs/bin/casperjs /usr/local/bin/casperjs && \
+    rm -f /tmp/casperjs.zip
